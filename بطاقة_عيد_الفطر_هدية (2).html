@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عيد الفطر المبارك 🌙</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #C9A84C;
+            --gold-light: #F0D080;
+            --gold-dark: #8A6520;
+            --text-dark: #3A2505;
+            --text-mid: #7A5520;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            min-height:100vh;
+            background:linear-gradient(150deg,#FFFFFF 0%,#FFF8E0 45%,#FFF0C5 100%);
+            display:flex; justify-content:center; align-items:center;
+            font-family:'Cairo',sans-serif;
+            overflow:hidden; position:relative; cursor:pointer;
+            user-select:none;
+        }
+
+        /* نجوم */
+        .stars-bg { position:fixed;inset:0;pointer-events:none;z-index:0; }
+        .star {
+            position:absolute;border-radius:50%;background:var(--gold);
+            animation:twinkle var(--dur,3s) ease-in-out infinite;
+            animation-delay:var(--delay,0s);
+        }
+        @keyframes twinkle {
+            0%,100%{opacity:.12;transform:scale(1);}
+            50%{opacity:.6;transform:scale(1.5);}
+        }
+
+        /* فوانيس */
+        .lanterns-bg { position:fixed;inset:0;pointer-events:none;z-index:1; }
+        .lantern {
+            position:absolute;
+            animation:floatUp linear infinite;
+            animation-duration:var(--fdur,9s);
+            animation-delay:var(--fdelay,0s);
+            opacity:0;
+        }
+        @keyframes floatUp {
+            0%{transform:translateY(110vh) rotate(-8deg);opacity:0;}
+            8%{opacity:.7;} 92%{opacity:.45;}
+            100%{transform:translateY(-15vh) rotate(8deg);opacity:0;}
+        }
+
+        /* جزيئات */
+        .particles-bg { position:fixed;inset:0;pointer-events:none;z-index:1; }
+        .particle {
+            position:absolute;border-radius:50%;
+            animation:particleFloat linear infinite;
+        }
+        @keyframes particleFloat {
+            0%{transform:translateY(105vh) scale(0);opacity:0;}
+            15%{opacity:.65;} 85%{opacity:.35;}
+            100%{transform:translateY(-10vh) scale(1);opacity:0;}
+        }
+
+        /* هلال */
+        .moon-wrap {
+            position:fixed;top:-58px;left:50%;transform:translateX(-50%);
+            width:188px;height:188px;z-index:2;
+            animation:moonRise 1.8s ease-out forwards, moonPulse 4s ease-in-out 2s infinite;
+        }
+        @keyframes moonRise {
+            from{top:-200px;opacity:0;} to{top:-58px;opacity:1;}
+        }
+        @keyframes moonPulse {
+            0%,100%{filter:drop-shadow(0 0 18px #C9A84C) drop-shadow(0 0 35px rgba(201,168,76,.28));}
+            50%{filter:drop-shadow(0 0 32px #C9A84C) drop-shadow(0 0 65px rgba(201,168,76,.5));}
+        }
+
+        /* ===== SCENE + CARD ===== */
+        .scene { perspective:1400px; z-index:10; position:relative; }
+
+        .flip-card {
+            width:355px; height:535px;
+            position:relative;
+            transform-style:preserve-3d;
+            cursor:pointer;
+        }
+
+        /* entrance — يشتغل مرة واحدة */
+        .flip-card.entrance {
+            animation:cardIn 1.1s cubic-bezier(.34,1.56,.64,1) forwards;
+        }
+        @keyframes cardIn {
+            from{transform:scale(.4) rotateY(-90deg);opacity:0;}
+            to{transform:scale(1)   rotateY(0deg);  opacity:1;}
+        }
+
+        /* flip — CSS transition بس */
+        .flip-card.flipped {
+            transform:rotateY(180deg);
+            transition:transform .9s cubic-bezier(.77,0,.175,1);
+        }
+        .flip-card.unflipped {
+            transform:rotateY(0deg);
+            transition:transform .9s cubic-bezier(.77,0,.175,1);
+        }
+
+        /* وجوه */
+        .card-face {
+            position:absolute;inset:0;border-radius:26px;
+            backface-visibility:hidden;-webkit-backface-visibility:hidden;
+            overflow:hidden;
+            box-shadow:
+                0 0 0 1.5px rgba(201,168,76,.55),
+                0 18px 55px rgba(180,140,50,.22),
+                inset 0 1px 0 rgba(255,255,255,.95);
+        }
+        .card-front {
+            background:linear-gradient(155deg,#FFFFFF 0%,#FFF8E0 55%,#FFF0C0 100%);
+        }
+        .card-back {
+            background:linear-gradient(155deg,#FFFDF5 0%,#FFF8E0 55%,#FFF2C0 100%);
+            transform:rotateY(180deg);
+        }
+
+        /* زخرفة */
+        .geo {
+            position:absolute;inset:0;opacity:.045;pointer-events:none;
+            background-image:
+                repeating-linear-gradient(45deg,#C9A84C 0,#C9A84C 1px,transparent 0,transparent 50%),
+                repeating-linear-gradient(-45deg,#C9A84C 0,#C9A84C 1px,transparent 0,transparent 50%);
+            background-size:20px 20px;
+        }
+        .gold-frame {
+            position:absolute;inset:11px;
+            border:1.5px solid rgba(201,168,76,.55);
+            border-radius:18px;pointer-events:none;
+        }
+        .gold-frame::before {
+            content:'';position:absolute;inset:6px;
+            border:1px solid rgba(201,168,76,.22);border-radius:13px;
+        }
+        .corner {
+            position:absolute;font-size:20px;color:var(--gold);opacity:.4;
+            animation:cGlow 3s ease-in-out infinite;
+        }
+        @keyframes cGlow { 0%,100%{opacity:.3;} 50%{opacity:.75;} }
+        .corner.tl{top:22px;right:22px;}
+        .corner.tr{top:22px;left:22px;transform:scaleX(-1);}
+        .corner.bl{bottom:22px;right:22px;transform:scaleY(-1);}
+        .corner.br{bottom:22px;left:22px;transform:scale(-1,-1);}
+
+        .sym {
+            position:absolute;left:50%;transform:translateX(-50%);
+            font-size:44px;color:var(--gold);
+            animation:cGlow 3s ease-in-out infinite;
+        }
+        .sym.top{top:15px;}
+        .sym.bottom{bottom:15px;transform:translateX(-50%) scaleY(-1);}
+
+        /* شريط هدية */
+        .ribbon-h {
+            position:absolute;top:0;left:0;right:0;height:5px;
+            background:linear-gradient(90deg,transparent,var(--gold-light),var(--gold),var(--gold-light),transparent);
+            border-radius:26px 26px 0 0;
+        }
+        .ribbon-v {
+            position:absolute;top:0;bottom:0;left:50%;width:5px;
+            transform:translateX(-50%);
+            background:linear-gradient(180deg,var(--gold),var(--gold-light),var(--gold));
+            opacity:.32;
+        }
+
+        /* الأمامي */
+        .front-body {
+            position:absolute;inset:0;
+            display:flex;flex-direction:column;align-items:center;justify-content:center;
+            gap:10px;padding:50px 28px;
+        }
+        .front-icon{font-size:60px;animation:iconBounce 2.5s ease-in-out infinite;}
+        @keyframes iconBounce{
+            0%,100%{transform:translateY(0) scale(1);}
+            50%{transform:translateY(-10px) scale(1.08);}
+        }
+        .front-title {
+            font-family:'Amiri',serif;font-size:44px;font-weight:700;
+            color:var(--gold-dark);text-align:center;line-height:1.3;
+            text-shadow:0 0 18px rgba(201,168,76,.35),0 2px 5px rgba(0,0,0,.06);
+        }
+        .front-sub{font-size:15px;color:var(--text-mid);letter-spacing:1px;opacity:.7;}
+        .gift-tag{font-size:13px;color:var(--gold-dark);opacity:.65;font-family:'Amiri',serif;margin-top:4px;}
+        .tap-hint {
+            position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+            font-size:12px;color:var(--gold-dark);opacity:.55;white-space:nowrap;
+            display:flex;align-items:center;gap:5px;
+            animation:hintPulse 2.2s ease-in-out infinite;
+        }
+        @keyframes hintPulse{
+            0%,100%{opacity:.4;transform:translateX(-50%) scale(1);}
+            50%{opacity:.9;transform:translateX(-50%) scale(1.04);}
+        }
+
+        /* الخلفي */
+        .back-body {
+            position:absolute;inset:0;
+            display:flex;flex-direction:column;align-items:center;justify-content:center;
+            gap:15px;padding:50px 26px 30px;text-align:center;
+        }
+        .back-icon{font-size:50px;}
+        .back-title {
+            font-family:'Amiri',serif;font-size:36px;font-weight:700;
+            color:var(--gold-dark);text-shadow:0 0 16px rgba(201,168,76,.3);
+        }
+        .back-verse {
+            font-family:'Amiri',serif;font-size:15px;font-style:italic;
+            color:var(--text-mid);line-height:1.85;
+            border-top:1px solid rgba(201,168,76,.4);
+            border-bottom:1px solid rgba(201,168,76,.4);
+            padding:10px 16px;width:100%;
+        }
+        .back-msg{font-size:14px;color:var(--text-dark);line-height:1.9;opacity:.85;}
+        .back-footer{font-size:26px;letter-spacing:4px;}
+        .back-from{font-size:12px;color:var(--text-mid);opacity:.6;font-style:italic;}
+
+        /* كونفيتي */
+        .confetti-piece {
+            position:fixed;pointer-events:none;z-index:999;
+            animation:confettiFall linear forwards;
+        }
+        @keyframes confettiFall{
+            0%{transform:translateY(-20px) rotate(0deg);opacity:1;}
+            100%{transform:translateY(110vh) rotate(720deg);opacity:0;}
+        }
+
+        /* مؤشر صغير */
+        .now-playing {
+            position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+            background:rgba(255,255,255,.9);
+            border:1.5px solid rgba(201,168,76,.45);
+            border-radius:40px;padding:7px 18px;
+            display:flex;align-items:center;gap:9px;
+            backdrop-filter:blur(12px);
+            box-shadow:0 3px 18px rgba(201,168,76,.18);
+            z-index:20;opacity:0;transition:opacity .7s;pointer-events:none;
+        }
+        .now-playing.show{opacity:1;}
+        .np-note{font-size:15px;animation:noteDance .55s ease-in-out infinite alternate;}
+        @keyframes noteDance{from{transform:translateY(0) rotate(-10deg);}to{transform:translateY(-4px) rotate(10deg);}}
+        .np-text{font-size:11.5px;color:var(--gold-dark);font-weight:600;}
+        .wave-bars{display:flex;align-items:center;gap:2px;height:17px;}
+        .wave-bar{
+            width:3px;background:var(--gold);border-radius:2px;
+            animation:waveDance var(--wd,.6s) ease-in-out infinite alternate;
+            animation-delay:var(--wdel,0s);
+        }
+        @keyframes waveDance{from{height:3px;}to{height:15px;}}
+    </style>
+</head>
+<body>
+
+<div class="stars-bg"    id="starsC"></div>
+<div class="lanterns-bg" id="lanternsC"></div>
+<div class="particles-bg" id="particlesC"></div>
+
+<!-- هلال -->
+<div class="moon-wrap">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+        <defs>
+            <radialGradient id="mg" cx="50%" cy="50%" r="50%">
+                <stop offset="0%"   stop-color="#FFF8D0"/>
+                <stop offset="70%"  stop-color="#F0D080"/>
+                <stop offset="100%" stop-color="#C9A84C" stop-opacity=".5"/>
+            </radialGradient>
+        </defs>
+        <circle cx="100" cy="100" r="88" fill="#F5D060" opacity=".07"/>
+        <path d="M100 30 C60 30 30 60 30 100 C30 140 60 170 100 170 C85 155 75 130 75 100 C75 70 85 45 100 30Z"
+              fill="url(#mg)" opacity=".92"/>
+        <polygon points="145,58 148,69 159,69 150,76 153,87 145,80 137,87 140,76 131,69 142,69"
+                 fill="#F5D060" opacity=".82"/>
+    </svg>
+</div>
+
+<!-- الكارت -->
+<div class="scene">
+    <div class="flip-card" id="card">
+
+        <div class="card-face card-front">
+            <div class="ribbon-h"></div>
+            <div class="ribbon-v"></div>
+            <div class="geo"></div>
+            <div class="gold-frame"></div>
+            <div class="corner tl">✦</div><div class="corner tr">✦</div>
+            <div class="corner bl">✦</div><div class="corner br">✦</div>
+            <div class="sym top">☪</div>
+            <div class="front-body">
+                <div class="front-icon">🌙</div>
+                <div class="front-title">عيد الفطر<br>المبارك</div>
+                <div class="front-sub">١٤٤٦ هـ</div>
+                <div class="gift-tag">🎁 هدية بمناسبة العيد المبارك 🎁</div>
+            </div>
+            <div class="tap-hint">✨ اضغط لتكتشف الرسالة ✨</div>
+            <div class="sym bottom">☪</div>
+        </div>
+
+        <div class="card-face card-back">
+            <div class="geo"></div>
+            <div class="gold-frame"></div>
+            <div class="corner tl">✦</div><div class="corner tr">✦</div>
+            <div class="corner bl">✦</div><div class="corner br">✦</div>
+            <div class="sym top">☪</div>
+            <div class="back-body">
+                <div class="back-icon">🌟</div>
+                <div class="back-title">عيد فطر مبارك</div>
+                <div class="back-verse">
+                    "وَلِتُكْمِلُوا الْعِدَّةَ وَلِتُكَبِّرُوا اللَّهَ عَلَىٰ مَا هَدَاكُمْ"
+                </div>
+                <div class="back-msg">
+                    تقبّل الله منّا ومنكم صالح الأعمال<br>
+                    كل عام وأنتم بخير وصحة وسعادة<br>
+                    يا رب نكون مع بعض دايماً 💛
+                </div>
+                <div class="back-footer">🕌 🌙 ⭐</div>
+                <div class="back-from">مع أطيب التهاني 🎁</div>
+            </div>
+            <div class="sym bottom">☪</div>
+        </div>
+
+    </div>
+</div>
+
+<!-- مؤشر صغير -->
+<div class="now-playing" id="nowPlaying">
+    <div class="np-note">🎵</div>
+    <div class="np-text" id="npText">أغاني العيد المصرية</div>
+    <div class="wave-bars">
+        <div class="wave-bar" style="--wd:.5s;--wdel:0s"></div>
+        <div class="wave-bar" style="--wd:.7s;--wdel:.1s"></div>
+        <div class="wave-bar" style="--wd:.4s;--wdel:.2s"></div>
+        <div class="wave-bar" style="--wd:.65s;--wdel:.3s"></div>
+        <div class="wave-bar" style="--wd:.5s;--wdel:.15s"></div>
+    </div>
+</div>
+
+<script>
+/* ===== خلفيات ===== */
+const starsC = document.getElementById('starsC');
+for (let i=0;i<90;i++){
+    const s=document.createElement('div'); s.className='star';
+    const sz=Math.random()*2.5+1;
+    s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${2+Math.random()*4}s;--delay:${Math.random()*5}s`;
+    starsC.appendChild(s);
+}
+const lanternsC=document.getElementById('lanternsC');
+const lEm=['🪔','🏮','🌟','✨','⭐','🌙','💫','🎁'];
+for(let i=0;i<16;i++){
+    const l=document.createElement('div'); l.className='lantern';
+    l.textContent=lEm[Math.floor(Math.random()*lEm.length)];
+    l.style.cssText=`left:${Math.random()*100}%;font-size:${18+Math.random()*16}px;--fdur:${7+Math.random()*8}s;--fdelay:${Math.random()*12}s`;
+    lanternsC.appendChild(l);
+}
+const particlesC=document.getElementById('particlesC');
+const pCols=['#C9A84C','#F0D080','#F5D060','#E8C44A','#FFF0A0'];
+for(let i=0;i<20;i++){
+    const p=document.createElement('div'); p.className='particle';
+    const sz=Math.random()*4+1.5;
+    p.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;background:${pCols[Math.floor(Math.random()*pCols.length)]};opacity:${.15+Math.random()*.25};animation-duration:${6+Math.random()*9}s;animation-delay:${Math.random()*12}s`;
+    particlesC.appendChild(p);
+}
+
+/* ===== الكارت ===== */
+const card = document.getElementById('card');
+let flipped = false;
+let entranceRunning = true;
+
+// نشغّل الـ entrance
+setTimeout(() => {
+    card.classList.add('entrance');
+    // بعد ما تخلص الـ entrance (1.1s) نشيلها
+    setTimeout(() => {
+        card.classList.remove('entrance');
+        entranceRunning = false;
+        // نثبّت الكارت في مكانه
+        card.style.transform = 'rotateY(0deg)';
+    }, 1200);
+}, 80);
+
+card.addEventListener('click', () => {
+    if (entranceRunning) return; // مانعمل flip لحد ما تخلص الـ entrance
+
+    flipped = !flipped;
+
+    if (flipped) {
+        card.classList.remove('unflipped');
+        void card.offsetWidth; // force reflow
+        card.classList.add('flipped');
+        launchConfetti();
+    } else {
+        card.classList.remove('flipped');
+        void card.offsetWidth;
+        card.classList.add('unflipped');
+    }
+    launchSparks();
+    startAudio(); // نشغّل الصوت من أول ضغطة
+});
+
+/* ===== شرارات ===== */
+function launchSparks(){
+    const cx=window.innerWidth/2, cy=window.innerHeight/2;
+    for(let i=0;i<14;i++){
+        const sp=document.createElement('div');
+        sp.style.cssText=`position:fixed;left:${cx}px;top:${cy}px;width:6px;height:6px;border-radius:50%;background:#C9A84C;pointer-events:none;z-index:9999;transition:all .8s ease-out;opacity:1`;
+        document.body.appendChild(sp);
+        const angle=(i/14)*Math.PI*2, dist=45+Math.random()*45;
+        setTimeout(()=>{sp.style.transform=`translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px)`;sp.style.opacity='0';},10);
+        setTimeout(()=>sp.remove(),900);
+    }
+}
+
+/* ===== كونفيتي ===== */
+function launchConfetti(){
+    const cols=['#C9A84C','#F0D080','#FFD700','#FFFFFF','#FFF0A0','#E8C44A'];
+    for(let i=0;i<90;i++){
+        setTimeout(()=>{
+            const c=document.createElement('div'); c.className='confetti-piece';
+            const sz=Math.random()*11+5;
+            c.style.cssText=`left:${Math.random()*100}vw;top:-20px;width:${sz}px;height:${sz*(Math.random()*1.4+.5)}px;background:${cols[Math.floor(Math.random()*cols.length)]};animation-duration:${2.5+Math.random()*3}s;transform:rotate(${Math.random()*360}deg);border-radius:${Math.random()>.5?'50%':'2px'}`;
+            document.body.appendChild(c);
+            setTimeout(()=>c.remove(),6000);
+        },i*28);
+    }
+}
+
+/* ===== موسيقى أغاني العيد المصرية ===== */
+// نستخدم YouTube IFrame API لتشغيل أغاني حقيقية
+let player, audioStarted = false;
+const nowPlaying = document.getElementById('nowPlaying');
+const npText     = document.getElementById('npText');
+
+// أغاني عيد مصرية مشهورة على يوتيوب
+const videos = [
+    { id: 'nnalBvhPKwI', title: 'عيدية - هاني شاكر 🎵' },
+    { id: 'R6KKuI77vb4', title: 'وحوي يا وحوي - تراث 🎵' },
+    { id: 'AjUFuBzr3Hw', title: 'يا ليلة العيد - تراث 🎵' },
+    { id: 'E3-0YmMKaEk', title: 'حلوة يا دنيا حلوة 🎵' },
+];
+let vidIdx = 0;
+
+// تحميل YouTube API
+const ytScript = document.createElement('script');
+ytScript.src = 'https://www.youtube.com/iframe_api';
+document.head.appendChild(ytScript);
+
+// حاوية مخفية لليوتيوب
+const ytDiv = document.createElement('div');
+ytDiv.id = 'yt-player';
+ytDiv.style.cssText = 'position:fixed;bottom:-9999px;left:-9999px;width:1px;height:1px;';
+document.body.appendChild(ytDiv);
+
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('yt-player', {
+        height:'1', width:'1',
+        videoId: videos[0].id,
+        playerVars: { autoplay:1, controls:0, loop:0, rel:0, playsinline:1, mute:0 },
+        events: {
+            onReady(e) {
+                e.target.setVolume(85);
+                e.target.playVideo();
+                showNowPlaying();
+                audioStarted = true;
+            },
+            onStateChange(e) {
+                if (e.data === YT.PlayerState.ENDED) {
+                    vidIdx = (vidIdx+1) % videos.length;
+                    player.loadVideoById(videos[vidIdx].id);
+                    npText.textContent = videos[vidIdx].title;
+                }
+                if (e.data === YT.PlayerState.PLAYING) {
+                    showNowPlaying();
+                }
+            },
+            onError() {
+                vidIdx = (vidIdx+1) % videos.length;
+                player.loadVideoById(videos[vidIdx].id);
+            }
+        }
+    });
+}
+
+function showNowPlaying() {
+    npText.textContent = videos[vidIdx].title;
+    nowPlaying.classList.add('show');
+}
+
+function startAudio() {
+    if (audioStarted) return;
+    audioStarted = true;
+    if (player && player.playVideo) {
+        player.playVideo();
+    }
+}
+
+// fallback لو YouTube ما اشتغلش بعد 5 ثواني
+setTimeout(() => {
+    if (!audioStarted) fallbackAudio();
+}, 5000);
+
+function fallbackAudio() {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (ctx.state === 'suspended') ctx.resume();
+        const gain = ctx.createGain();
+        gain.gain.value = 0.14;
+        gain.connect(ctx.destination);
+        const dly = ctx.createDelay(.4); dly.delayTime.value = .28;
+        const dlyG = ctx.createGain(); dlyG.gain.value = .12;
+        gain.connect(dly); dly.connect(dlyG); dlyG.connect(ctx.destination);
+
+        // لحن سلّم حجاز احتفالي
+        const sc=[261.63,277.18,329.63,349.23,392.00,415.30,493.88,523.25,554.37,659.25];
+        const mel=[
+            [5,.28],[6,.28],[7,.28],[8,.56],[7,.28],[6,.28],[5,.28],[4,.56],
+            [6,.28],[7,.28],[8,.28],[9,.56],[8,.56],[7,.56],
+            [5,.28],[6,.28],[7,.28],[8,.56],[7,.28],[6,.28],[5,.84],
+            [4,.28],[5,.28],[6,.28],[7,.84],
+        ];
+        const totalDur=mel.reduce((s,[,d])=>s+d,0);
+        function play(st){
+            let t=st;
+            for(const[idx,dur]of mel){
+                const o=ctx.createOscillator(),g2=ctx.createGain();
+                o.type='sine'; o.frequency.value=sc[Math.min(idx,sc.length-1)];
+                g2.gain.setValueAtTime(0,t);
+                g2.gain.linearRampToValueAtTime(.55,t+.04);
+                g2.gain.exponentialRampToValueAtTime(.01,t+dur*.88);
+                o.connect(g2); g2.connect(gain); o.start(t); o.stop(t+dur);
+                t+=dur;
+            }
+        }
+        play(ctx.currentTime);
+        setInterval(()=>play(ctx.currentTime), totalDur*1000+200);
+        nowPlaying.classList.add('show');
+        npText.textContent='أغاني العيد 🎵';
+        audioStarted=true;
+    } catch(e){}
+}
+</script>
+</body>
+</html>
